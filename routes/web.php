@@ -20,15 +20,19 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     
+    /* Rotas para Usuário */
     Route::get('/usuarios', 'UsuarioController@index')->name('usuarios');
     Route::get('/usuarios/novo', 'UsuarioController@create')->name('novo_usuario');
     Route::post('/usuarios/store', 'UsuarioController@store')->name('cadastrar_usuario');
     Route::get('/usuarios/excluir/{id}', 'UsuarioController@destroy')->name('excluir_usuario');
 
-
+    /* Rotas para Paciente */
     Route::get('/pacientes', 'PacienteController@index')->name('pacientes');
     Route::get('/pacientes/novo', 'PacienteController@create')->name('novo_paciente');
     Route::post('/pacientes/store', 'PacienteController@store')->name('cadastrar_paciente');
+    Route::get('/pacientes/exibir/{id}', 'PacienteController@show')->name('exibir_paciente');
+
+
 
     // Route::resource('user', 'UserController', ['except' => ['show']]);
 	// Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);

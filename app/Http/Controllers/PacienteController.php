@@ -6,6 +6,7 @@ use App\Endereco;
 use App\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Paciente\ShowPacienteViewModel;
 
 class PacienteController extends Controller
 {
@@ -45,17 +46,26 @@ class PacienteController extends Controller
         $paciente->endereco_id = $endereco->id;
         $paciente->save();
 
+        return redirect()->route('exibir_paciente', ['id' => $paciente->id])->withStatus(__('Cadastro Realizado com Sucesso!'));
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
-        //
+        $model = new ShowPacienteViewModel();
+
+        $paciente = Paciente::find($id);        
+        if (isset($paciente)) {
+            $model->setPaciente($paciente);
+
+            $endereco = Endereco::Find($paciente->endereco_id);
+            if(isset($endereco)){
+                $model->setEndereco($endereco);
+            }            
+        }else{
+            $model->setMensagem('Cadastro não Encontrado!');
+        }
+
+        return view('paciente.show', [ 'model' => $model]);
     }
 
     /**

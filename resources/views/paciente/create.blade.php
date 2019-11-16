@@ -1,3 +1,8 @@
+<?php
+    use App\Lib\Genero;
+    
+?>
+
 @extends('layouts.app')
 
 @section('content')
@@ -75,8 +80,8 @@
 
                                         <select id="genero" type="text" class="form-control @error('genero') is-invalid @enderror" name="genero" value="{{ old('genero') }}" autocomplete="genero" required>
                                             <option selected disabled>-- Selecione --</option>
-                                            <option value="F">Feminino</option>
-                                            <option value="M">Masculino</option>
+                                            <option value="F">{{ __(Genero::getStringGenero('F')) }}</option>
+                                            <option value="M">{{ __(Genero::getStringGenero('M')) }}</option>
                                         </select>
 
                                         @error('genero')
