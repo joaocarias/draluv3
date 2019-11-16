@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/pacientes', 'PacienteController@index')->name('pacientes');
     Route::get('/pacientes/novo', 'PacienteController@create')->name('novo_paciente');
+    Route::post('/pacientes/store', 'PacienteController@store')->name('cadastrar_paciente');
 
     // Route::resource('user', 'UserController', ['except' => ['show']]);
 	// Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);

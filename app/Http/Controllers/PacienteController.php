@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Endereco;
+use App\Paciente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PacienteController extends Controller
 {
@@ -13,18 +16,35 @@ class PacienteController extends Controller
 
     public function create()
     {
-        
+        return view('paciente.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $endereco = new Endereco();
+        $endereco->cep = $request->input('cep');
+        $endereco->logradouro = $request->input('logradouro');
+        $endereco->numero = $request->input('numero');
+        $endereco->bairro = $request->input('bairro');
+        $endereco->complemento = $request->input('complemento');
+        $endereco->cidade = $request->input('cidade');
+        $endereco->uf = $request->input('uf');
+        $endereco->usuario_cadastro = Auth::user()->id;
+        $endereco->save();
+
+        $paciente = new Paciente();
+        $paciente->ficha_id = $request->input('ficha_id');
+        $paciente->cpf = $request->input('cpf');
+        $paciente->nome = $request->input('nome');
+        $paciente->genero = $request->input('genero');
+        $paciente->data_de_nascimento = $request->input('data_de_nascimento');
+        $paciente->email = $request->input('email');
+        $paciente->telefone = $request->input('telefone');
+        $paciente->observacao = $request->input('observacao');
+        $paciente->usuario_cadastro = Auth::user()->id;
+        $paciente->endereco_id = $endereco->id;
+        $paciente->save();
+
     }
 
     /**
