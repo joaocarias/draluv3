@@ -1,6 +1,7 @@
 <?php
-    use App\Lib\Genero;
-    
+
+use App\Lib\Genero;
+
 ?>
 
 @extends('layouts.app')
@@ -14,7 +15,7 @@
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}"> <i class="fas fa-home"></i> &nbsp; Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('pacientes') }}">Pacientes</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Cadastro</li>
                 </ol>
@@ -51,7 +52,7 @@
                                     <div class="col-md-3">
                                         <label for="cpf" class="col-form-label">{{ __('CPF') }}</label>
 
-                                        <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value="{{ old('cpf') }}" autocomplete="cpf">
+                                        <input id="cpf" type="text" class="mask_cpf form-control @error('cpf') is-invalid @enderror" name="cpf" value="{{ old('cpf') }}" autocomplete="cpf">
 
                                         @error('cpf')
                                         <span class="invalid-feedback" role="alert">
@@ -94,7 +95,7 @@
                                     <div class="col-md-3">
                                         <label for="data_de_nascimento" class="col-form-label">{{ __('* Data de Nascimento') }}</label>
 
-                                        <input id="data_de_nascimento" type="text" class="form-control @error('data_de_nascimento') is-invalid @enderror" name="data_de_nascimento" value="{{ old('data_de_nascimento') }}" autocomplete="data_de_nascimento" required>
+                                        <input id="data_de_nascimento" type="text" class="mask_data form-control @error('data_de_nascimento') is-invalid @enderror" name="data_de_nascimento" value="{{ old('data_de_nascimento') }}" autocomplete="data_de_nascimento" required>
 
                                         @error('cpf')
                                         <span class="invalid-feedback" role="alert">
@@ -120,7 +121,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-3">
                                         <label for="telefone" class="col-form-label">{{ __('Telefone') }}</label>
-                                        <input id="telefone" type="text" class="form-control @error('telefone') is-invalid @enderror" name="telefone" value="{{ old('telefone') }}" autocomplete="telefone">
+                                        <input id="telefone" type="text" class="mask_telefone form-control @error('telefone') is-invalid @enderror" name="telefone" value="{{ old('telefone') }}" autocomplete="telefone">
 
                                         @error('telefone')
                                         <span class="invalid-feedback" role="alert">
@@ -154,10 +155,12 @@
                 <div class="form-group row">
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary">
+                            <i class="far fa-save"></i>
                             {{ __('Salvar') }}
                         </button>
 
                         <a href="{{ route('pacientes') }}" class="btn btn-warning">
+                            <i class="far fa-times-circle"></i>
                             {{ __('Cancelar') }}
                         </a>
                     </div>
@@ -172,4 +175,27 @@
 </div>
 
 
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+    $(document).ready(function($) {
+        $('.mask_cpf').mask('000.000.000-00');
+        $('.mask_data').mask('00/00/0000');
+
+        var SPMaskBehavior = function(val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
+            spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                }
+            };
+
+        $('.mask_telefone').mask(SPMaskBehavior, spOptions);
+
+        $('.mask_cep').mask('00000-000');
+
+    });
+</script>
 @endsection

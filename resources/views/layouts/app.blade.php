@@ -13,6 +13,10 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- Fontawesome -->
+     <link href="{{ asset('lib/fontawesome//css/all.css') }}" rel="stylesheet">
+  
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -38,6 +42,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('pacientes') }}">
+                                    <i class="far fa-address-book"></i> &nbsp;
                                         {{ __('Pacientes') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}">
@@ -109,9 +114,16 @@
         </main>
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+ <!-- Fontawesome -->
 
+    <script src="{{ asset('lib/fontawesome/fontawesome.js') }}"></script>   
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>  
+    <script src="{{ asset('lib/jquery-mask/jquery.mask.js') }}"></script>
+    
+   
+         
     @hasSection('javascript')
         @yield('javascript')
     @endif

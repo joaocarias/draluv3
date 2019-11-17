@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i> &nbsp; Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('pacientes') }}">Pacientes</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Exibir</li>
                 </ol>

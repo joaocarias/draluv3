@@ -8,7 +8,7 @@
                 <div class="form-group row">
                     <div class="col-md-3">
                         <label for="cep" class="col-form-label">{{ __('CEP') }} </label>
-                        <input id="cep" type="text" class="form-control @error('cep') is-invalid @enderror" name="cep" value="{{ old('cep') }}" autocomplete="cep">
+                        <input id="cep" type="text" class="mask_cep form-control @error('cep') is-invalid @enderror" name="cep" value="{{ old('cep') }}" autocomplete="cep">
 
                         @error('cep')
                         <span class="invalid-feedback" role="alert">

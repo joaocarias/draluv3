@@ -3,16 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Endereco;
+use App\Models\Paciente\PacientesViewModel;
 use App\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Paciente\ShowPacienteViewModel;
+use App\Lib\Auxiliar;
 
 class PacienteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('paciente.index');
+        $model = new PacientesViewModel();
+
+        $pacientesRecentes = Paciente::orderBy('created_at', 'desc')->take(10)->get();
+        $model->setPacientesRecentes($pacientesRecentes);
+
+        $filtro = $request->input('filtro');
+        $model->setFiltro($filtro);
+
+        $pacientesFiltro = Paciente::where('nome', 'like', "%" . $filtro . "%")
+                ->orWhere('cpf','like', "%" . $filtro . "%")
+                ->orWhere('ficha_id','like', "%" . $filtro . "%")
+                ->orderBy('nome', 'asc')
+                ->get();
+
+        $model->setPacientesFiltro($pacientesFiltro);
+
+        return view('paciente.index', [ 'model' => $model ]);
     }
 
     public function create()
@@ -38,7 +56,7 @@ class PacienteController extends Controller
         $paciente->cpf = $request->input('cpf');
         $paciente->nome = $request->input('nome');
         $paciente->genero = $request->input('genero');
-        $paciente->data_de_nascimento = $request->input('data_de_nascimento');
+        $paciente->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
         $paciente->email = $request->input('email');
         $paciente->telefone = $request->input('telefone');
         $paciente->observacao = $request->input('observacao');
