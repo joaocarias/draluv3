@@ -64,7 +64,7 @@ use App\Lib\Genero;
                                     <div class="col-md-6">
                                         <label for="nome" class="col-form-label">{{ __('* Nome Completo') }}</label>
 
-                                        <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') }}" required autocomplete="nome">
+                                        <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') }}" required autocomplete="nome" maxlength="254">
 
                                         @error('nome')
                                         <span class="invalid-feedback" role="alert">
@@ -97,7 +97,7 @@ use App\Lib\Genero;
 
                                         <input id="data_de_nascimento" type="text" class="mask_data form-control @error('data_de_nascimento') is-invalid @enderror" name="data_de_nascimento" value="{{ old('data_de_nascimento') }}" autocomplete="data_de_nascimento" required>
 
-                                        @error('cpf')
+                                        @error('data_de_nascimento')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/pacientes/novo', 'PacienteController@create')->name('novo_paciente');
     Route::post('/pacientes/store', 'PacienteController@store')->name('cadastrar_paciente');
     Route::get('/pacientes/exibir/{id}', 'PacienteController@show')->name('exibir_paciente');
+    Route::get('/pacientes/excluir/{id}', 'PacienteController@destroy')->name('excluir_paciente');
+
 
 
 

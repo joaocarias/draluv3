@@ -40,6 +40,27 @@ class PacienteController extends Controller
 
     public function store(Request $request)
     {
+        $regras = [
+            'nome' => 'required|min:3|max:254',
+            'gereno' => 'required',
+            'data_de_nascimento' => 'required|date|date_format:d-m-Y',
+            'logradouro' => 'required|min:3|max:254',
+            'cidade' => 'required|min:3|max:254',
+            'genero' => 'required',
+            
+        ];
+
+        $messagens = [
+            'required' => 'O atributo :attribute é obrigatório!',
+            'nome.required' => 'O nome é requerido',
+            'nome.min' => 'É necessário no mínimo 3 caracteres',
+            'genero.required' => 'Campo Obrigatório', 
+            'data_de_nascimento.date' => 'Informe uma data válida',
+            'data_de_nascimento.date_format' => 'Informe uma data válida',            
+        ];
+
+        $request->validate($regras, $messagens);
+
         $endereco = new Endereco();
         $endereco->cep = $request->input('cep');
         $endereco->logradouro = $request->input('logradouro');
@@ -94,7 +115,7 @@ class PacienteController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -109,14 +130,12 @@ class PacienteController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $paciente = Paciente::find($id);
+        if (isset($paciente)) {
+            $paciente->delete();
+        }
+        return redirect()->route('pacientes')->withStatus(__('Cadastro Excluído com Sucesso!'));;       
     }
 }
