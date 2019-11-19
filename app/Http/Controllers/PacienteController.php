@@ -42,21 +42,25 @@ class PacienteController extends Controller
     {
         $regras = [
             'nome' => 'required|min:3|max:254',
-            'gereno' => 'required',
-            'data_de_nascimento' => 'required|date|date_format:d-m-Y',
+            'genero' => 'required',
+            'data_de_nascimento' => 'required|date|date_format:d/m/Y',
             'logradouro' => 'required|min:3|max:254',
             'cidade' => 'required|min:3|max:254',
-            'genero' => 'required',
-            
+            'uf' => 'required',
         ];
 
         $messagens = [
-            'required' => 'O atributo :attribute é obrigatório!',
-            'nome.required' => 'O nome é requerido',
-            'nome.min' => 'É necessário no mínimo 3 caracteres',
-            'genero.required' => 'Campo Obrigatório', 
-            'data_de_nascimento.date' => 'Informe uma data válida',
-            'data_de_nascimento.date_format' => 'Informe uma data válida',            
+            'required' => 'Campo Obrigatório!',
+            'nome.required' => 'Campo Obrigatório!',
+            'nome.min' => 'É necessário no mínimo 3 caracteres!',
+            'genero.required' => 'Campo Obrigatório!', 
+            'data_de_nascimento.date' => 'Informe uma data válida!',
+            'data_de_nascimento.date_format' => 'Informe uma data válida!',
+            'logradouro.required' => 'Campo Obrigatório!',
+            'logradouro.min' => 'É necessário no mínimo 3 caracteres!',  
+            'cidade.required' => 'Campo Obrigatório!',
+            'cidade.min' => 'É necessário no mínimo 3 caracteres!', 
+            'uf.required' => 'Campo Obrigatório!',                     
         ];
 
         $request->validate($regras, $messagens);

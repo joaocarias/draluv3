@@ -79,10 +79,10 @@ use App\Lib\Genero;
                                     <div class="col-md-3">
                                         <label for="genero" class="col-form-label">{{ __('* Gênero') }}</label>
 
-                                        <select id="genero" type="text" class="form-control @error('genero') is-invalid @enderror" name="genero" value="{{ old('genero') }}" autocomplete="genero" required>
+                                        <select id="genero" type="text" class="form-control @error('genero') is-invalid @enderror" name="genero" autocomplete="genero" required>
                                             <option selected disabled>-- Selecione --</option>
-                                            <option value="F">{{ __(Genero::getStringGenero('F')) }}</option>
-                                            <option value="M">{{ __(Genero::getStringGenero('M')) }}</option>
+                                            <option value="F" @if ( old('genero') == "F") {{ 'selected' }} @endif >{{ __(Genero::getStringGenero('F')) }}</option>
+                                            <option value="M" @if ( old('genero') == "M") {{ 'selected' }} @endif >{{ __(Genero::getStringGenero('M')) }}</option>
                                         </select>
 
                                         @error('genero')
