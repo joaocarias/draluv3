@@ -194,7 +194,7 @@ use App\Lib\Genero;
 
         $('.mask_telefone').mask(SPMaskBehavior, spOptions);
 
-        $('.mask_cep').mask('00000-000');
+        $('.mask_cep').mask('00000-000');    
 
         function limpa_formulário_cep() {
             // Limpa valores do formulário de cep.
