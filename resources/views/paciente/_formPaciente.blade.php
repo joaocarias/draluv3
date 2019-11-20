@@ -1,5 +1,7 @@
 <?php
 use App\Lib\Genero;
+use App\Lib\Auxiliar;
+
 ?>
 
 <div class="form-group row">
@@ -58,10 +60,9 @@ use App\Lib\Genero;
         @enderror
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-3">        
         <label for="data_de_nascimento" class="col-form-label">{{ __('* Data de Nascimento') }}</label>
-
-        <input id="data_de_nascimento" type="text" class="mask_data form-control @error('data_de_nascimento', $model->paciente->data_de_nascimento ?? '' ) is-invalid @enderror" name="data_de_nascimento" value="{{ old('data_de_nascimento') }}" autocomplete="data_de_nascimento" required>
+        <input id="data_de_nascimento" type="text" class="mask_data form-control @error('data_de_nascimento') is-invalid @enderror" name="data_de_nascimento" value="{{ old('data_de_nascimento', $model->paciente->data_de_nascimento ? Auxiliar::converterDataParaBR($model->paciente->data_de_nascimento) : '') }}" autocomplete="data_de_nascimento" required>
 
         @error('data_de_nascimento')
         <span class="invalid-feedback" role="alert">
@@ -71,9 +72,8 @@ use App\Lib\Genero;
     </div>
 
     <div class="col-md-6">
-
         <label for="email" class="col-form-label text-md-right">{{ __('E-Mail') }}</label>
-        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
+        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $model->paciente->email ?? '') }}" autocomplete="email">
 
         @error('email')
         <span class="invalid-feedback" role="alert">
@@ -87,7 +87,7 @@ use App\Lib\Genero;
 <div class="form-group row">
     <div class="col-md-3">
         <label for="telefone" class="col-form-label">{{ __('Telefone') }}</label>
-        <input id="telefone" type="text" class="mask_telefone form-control @error('telefone') is-invalid @enderror" name="telefone" value="{{ old('telefone') }}" autocomplete="telefone">
+        <input id="telefone" type="text" class="mask_telefone form-control @error('telefone') is-invalid @enderror" name="telefone" value="{{ old('telefone', $model->paciente->telefone ?? '') }}" autocomplete="telefone">
 
         @error('telefone')
         <span class="invalid-feedback" role="alert">
@@ -99,7 +99,7 @@ use App\Lib\Genero;
 
     <div class="col-md-9">
         <label for="observacao" class="col-form-label text-md-right">{{ __('Observação') }}</label>
-        <input id="observacao" type="text" class="form-control @error('observacao') is-invalid @enderror" name="observacao" value="{{ old('observacao') }}" autocomplete="observacao">
+        <input id="observacao" type="text" class="form-control @error('observacao') is-invalid @enderror" name="observacao" value="{{ old('observacao', $model->paciente->observacao ?? '') }}" autocomplete="observacao">
 
         @error('observacao')
         <span class="invalid-feedback" role="alert">

@@ -2,6 +2,8 @@
 
 namespace App\Lib;
 
+use DateTime;
+
 class Auxiliar
 {
     public static function converterDataParaBR($data_USA){                
