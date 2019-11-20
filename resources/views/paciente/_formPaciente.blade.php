@@ -62,7 +62,10 @@ use App\Lib\Auxiliar;
 
     <div class="col-md-3">        
         <label for="data_de_nascimento" class="col-form-label">{{ __('* Data de Nascimento') }}</label>
-        <input id="data_de_nascimento" type="text" class="mask_data form-control @error('data_de_nascimento') is-invalid @enderror" name="data_de_nascimento" value="{{ old('data_de_nascimento', $model->paciente->data_de_nascimento ? Auxiliar::converterDataParaBR($model->paciente->data_de_nascimento) : '') }}" autocomplete="data_de_nascimento" required>
+        <?php 
+            $dataDeNascimento =  (!isset($model->paciente) or is_null($model->paciente) or $model->paciente->data_de_nascimento == "") ? null : Auxiliar::converterDataParaBR($model->paciente->data_de_nascimento) ;            
+        ?>        
+        <input id="data_de_nascimento" type="text" class="mask_data form-control @error('data_de_nascimento') is-invalid @enderror" name="data_de_nascimento" value="{{ old('data_de_nascimento', $dataDeNascimento ?? '') }}" autocomplete="data_de_nascimento" required>
 
         @error('data_de_nascimento')
         <span class="invalid-feedback" role="alert">
