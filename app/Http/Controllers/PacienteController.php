@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Paciente\ShowPacienteViewModel;
 use App\Lib\Auxiliar;
+use App\Models\Paciente\EditarPacienteViewModel;
 
 class PacienteController extends Controller
 {
@@ -35,7 +36,7 @@ class PacienteController extends Controller
 
     public function create()
     {
-        return view('paciente.create');
+        return view('paciente.create', ['model' => null]);
     }
 
     public function store(Request $request)
@@ -111,27 +112,29 @@ class PacienteController extends Controller
         return view('paciente.show', [ 'model' => $model]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
+        $model = new EditarPacienteViewModel();
         
+        $paciente = Paciente::find($id);       
+        if (isset($paciente)) {
+            $model->setPaciente($paciente);
+
+            $endereco = Endereco::Find($paciente->endereco_id);
+            if(isset($endereco)){
+                $model->setEndereco($endereco);
+            }            
+        }else{
+            $model->setMensagem('Cadastro não Encontrado!');
+        }
+
+        return view('paciente.edit', [ 'model' => $model]);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     public function destroy($id)

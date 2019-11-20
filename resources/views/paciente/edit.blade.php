@@ -1,4 +1,8 @@
+<?php
 
+use App\Lib\Genero;
+
+?>
 
 @extends('layouts.app')
 
@@ -13,7 +17,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}"> <i class="fas fa-home"></i> &nbsp; Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('pacientes') }}">Pacientes</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Cadastro</li>
+                    <li class="breadcrumb-item active" aria-current="page">Editar</li>
                 </ol>
             </nav>
         </div>
@@ -22,7 +26,7 @@
     <div class="row">
         <div class="col-md-12">
 
-            <form method="POST" action="{{ route('cadastrar_paciente') }}">
+            <form method="POST" action="{{ route('update_paciente', [ 'id' => $model->paciente->id ]) }}">
                 @csrf
 
                 <div class="row justify-content-center">
@@ -47,6 +51,7 @@
                     </div>
                 </div>
 
+
                 <div class="form-group row">
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary">
@@ -60,8 +65,6 @@
                         </a>
                     </div>
                 </div>
-
-
 
             </form>
         </div>
@@ -89,14 +92,14 @@
 
         $('.mask_telefone').mask(SPMaskBehavior, spOptions);
 
-        $('.mask_cep').mask('00000-000');
+        $('.mask_cep').mask('00000-000');    
 
         function limpa_formulário_cep() {
             // Limpa valores do formulário de cep.
             $("#logradouro").val("");
             $("#bairro").val("");
             $("#cidade").val("");
-            $("#uf").val("RN");
+            $("#uf").val("RN") ;           
         }
 
         //Quando o campo cep perde o foco.
@@ -118,7 +121,7 @@
                     $("#logradouro").val("...");
                     $("#bairro").val("...");
                     $("#cidade").val("...");
-
+                    
                     //Consulta o webservice viacep.com.br/
                     $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
 
@@ -127,8 +130,8 @@
                             $("#logradouro").val(dados.logradouro);
                             $("#bairro").val(dados.bairro);
                             $("#cidade").val(dados.localidade);
-                            $("#uf").val(dados.uf);
-
+                            $("#uf").val(dados.uf);            
+                            
                         } //end if.
                         else {
                             //CEP pesquisado não foi encontrado.
@@ -150,5 +153,6 @@
         });
 
     });
+    
 </script>
 @endsection
