@@ -44,7 +44,7 @@ class PacienteController extends Controller
         $regras = [
             'nome' => 'required|min:3|max:254',
             'genero' => 'required',
-            'data_de_nascimento' => 'required|date|date_format:d/m/Y',
+            'data_de_nascimento' => 'required|date_format:d/m/Y',
             'logradouro' => 'required|min:3|max:254',
             'cidade' => 'required|min:3|max:254',
             'uf' => 'required',
@@ -55,8 +55,7 @@ class PacienteController extends Controller
             'nome.required' => 'Campo Obrigatório!',
             'nome.min' => 'É necessário no mínimo 3 caracteres!',
             'genero.required' => 'Campo Obrigatório!', 
-            'data_de_nascimento.date' => 'Informe uma data válida!',
-            'data_de_nascimento.date_format' => 'Informe uma data válida!',
+            'data_de_nascimento.date_format' => 'Informe uma data válida2!',
             'logradouro.required' => 'Campo Obrigatório!',
             'logradouro.min' => 'É necessário no mínimo 3 caracteres!',  
             'cidade.required' => 'Campo Obrigatório!',
@@ -134,7 +133,54 @@ class PacienteController extends Controller
 
     public function update(Request $request, $id)
     {
+        $regras = [
+            'nome' => 'required|min:3|max:254',
+            'genero' => 'required',
+            'data_de_nascimento' => 'required|date_format:d/m/Y',
+            'logradouro' => 'required|min:3|max:254',
+            'cidade' => 'required|min:3|max:254',
+            'uf' => 'required',
+        ];
+
+        $messagens = [
+            'required' => 'Campo Obrigatório!',
+            'nome.required' => 'Campo Obrigatório!',
+            'nome.min' => 'É necessário no mínimo 3 caracteres!',
+            'genero.required' => 'Campo Obrigatório!', 
+            'data_de_nascimento.date_format' => 'Informe uma data válida2!',
+            'logradouro.required' => 'Campo Obrigatório!',
+            'logradouro.min' => 'É necessário no mínimo 3 caracteres!',  
+            'cidade.required' => 'Campo Obrigatório!',
+            'cidade.min' => 'É necessário no mínimo 3 caracteres!', 
+            'uf.required' => 'Campo Obrigatório!',                     
+        ];
+
+        $request->validate($regras, $messagens);
+
+        $paciente = Paciente::find($id);
         
+        $endereco = Endereco();
+        $endereco->cep = $request->input('cep');
+        $endereco->logradouro = $request->input('logradouro');
+        $endereco->numero = $request->input('numero');
+        $endereco->bairro = $request->input('bairro');
+        $endereco->complemento = $request->input('complemento');
+        $endereco->cidade = $request->input('cidade');
+        $endereco->uf = $request->input('uf');
+        $endereco->usuario_cadastro = Auth::user()->id;
+        $endereco->save();
+
+        $paciente->ficha_id = $request->input('ficha_id');
+        $paciente->cpf = $request->input('cpf');
+        $paciente->nome = $request->input('nome');
+        $paciente->genero = $request->input('genero');
+        $paciente->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
+        $paciente->email = $request->input('email');
+        $paciente->telefone = $request->input('telefone');
+        $paciente->observacao = $request->input('observacao');
+        $paciente->usuario_cadastro = Auth::user()->id;
+        $paciente->endereco_id = $endereco->id;
+        $paciente->save();
     }
 
     public function destroy($id)
