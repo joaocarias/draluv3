@@ -73,8 +73,6 @@ use App\Lib\Genero;
 
                     @if( $model->getFiltro() != null && ($model->getFiltro() != "") )
 
-                    <hr />
-
                     @if(count($model->getPacientesFiltro()) > 0)
                     <table class="table table-hover">
                         <thead>

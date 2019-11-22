@@ -28,6 +28,7 @@ use App\Lib\Genero;
 
             <form method="POST" action="{{ route('update_paciente', [ 'id' => $model->paciente->id ]) }}">
                 @csrf
+                @method('put')
 
                 <div class="row justify-content-center">
                     <div class="col-md-12">

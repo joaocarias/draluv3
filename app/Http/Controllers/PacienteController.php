@@ -24,14 +24,14 @@ class PacienteController extends Controller
         $model->setFiltro($filtro);
 
         $pacientesFiltro = Paciente::where('nome', 'like', "%" . $filtro . "%")
-                ->orWhere('cpf','like', "%" . $filtro . "%")
-                ->orWhere('ficha_id','like', "%" . $filtro . "%")
-                ->orderBy('nome', 'asc')
-                ->get();
+            ->orWhere('cpf', 'like', "%" . $filtro . "%")
+            ->orWhere('ficha_id', 'like', "%" . $filtro . "%")
+            ->orderBy('nome', 'asc')
+            ->get();
 
         $model->setPacientesFiltro($pacientesFiltro);
 
-        return view('paciente.index', [ 'model' => $model ]);
+        return view('paciente.index', ['model' => $model]);
     }
 
     public function create()
@@ -54,13 +54,13 @@ class PacienteController extends Controller
             'required' => 'Campo Obrigatório!',
             'nome.required' => 'Campo Obrigatório!',
             'nome.min' => 'É necessário no mínimo 3 caracteres!',
-            'genero.required' => 'Campo Obrigatório!', 
+            'genero.required' => 'Campo Obrigatório!',
             'data_de_nascimento.date_format' => 'Informe uma data válida2!',
             'logradouro.required' => 'Campo Obrigatório!',
-            'logradouro.min' => 'É necessário no mínimo 3 caracteres!',  
+            'logradouro.min' => 'É necessário no mínimo 3 caracteres!',
             'cidade.required' => 'Campo Obrigatório!',
-            'cidade.min' => 'É necessário no mínimo 3 caracteres!', 
-            'uf.required' => 'Campo Obrigatório!',                     
+            'cidade.min' => 'É necessário no mínimo 3 caracteres!',
+            'uf.required' => 'Campo Obrigatório!',
         ];
 
         $request->validate($regras, $messagens);
@@ -91,44 +91,43 @@ class PacienteController extends Controller
 
         return redirect()->route('exibir_paciente', ['id' => $paciente->id])->withStatus(__('Cadastro Realizado com Sucesso!'));
     }
-    
+
     public function show($id)
     {
         $model = new ShowPacienteViewModel();
 
-        $paciente = Paciente::find($id);        
+        $paciente = Paciente::find($id);
         if (isset($paciente)) {
             $model->setPaciente($paciente);
 
             $endereco = Endereco::Find($paciente->endereco_id);
-            if(isset($endereco)){
+            if (isset($endereco)) {
                 $model->setEndereco($endereco);
-            }            
-        }else{
+            }
+        } else {
             $model->setMensagem('Cadastro não Encontrado!');
         }
 
-        return view('paciente.show', [ 'model' => $model]);
+        return view('paciente.show', ['model' => $model]);
     }
 
     public function edit($id)
     {
         $model = new EditarPacienteViewModel();
-        
-        $paciente = Paciente::find($id);       
+
+        $paciente = Paciente::find($id);
         if (isset($paciente)) {
             $model->setPaciente($paciente);
 
             $endereco = Endereco::Find($paciente->endereco_id);
-            if(isset($endereco)){
+            if (isset($endereco)) {
                 $model->setEndereco($endereco);
-            }            
-        }else{
+            }
+        } else {
             $model->setMensagem('Cadastro não Encontrado!');
         }
 
-        return view('paciente.edit', [ 'model' => $model]);
-
+        return view('paciente.edit', ['model' => $model]);
     }
 
     public function update(Request $request, $id)
@@ -146,41 +145,50 @@ class PacienteController extends Controller
             'required' => 'Campo Obrigatório!',
             'nome.required' => 'Campo Obrigatório!',
             'nome.min' => 'É necessário no mínimo 3 caracteres!',
-            'genero.required' => 'Campo Obrigatório!', 
+            'genero.required' => 'Campo Obrigatório!',
             'data_de_nascimento.date_format' => 'Informe uma data válida2!',
             'logradouro.required' => 'Campo Obrigatório!',
-            'logradouro.min' => 'É necessário no mínimo 3 caracteres!',  
+            'logradouro.min' => 'É necessário no mínimo 3 caracteres!',
             'cidade.required' => 'Campo Obrigatório!',
-            'cidade.min' => 'É necessário no mínimo 3 caracteres!', 
-            'uf.required' => 'Campo Obrigatório!',                     
+            'cidade.min' => 'É necessário no mínimo 3 caracteres!',
+            'uf.required' => 'Campo Obrigatório!',
         ];
 
         $request->validate($regras, $messagens);
 
-        $paciente = Paciente::find($id);
-        
-        $endereco = Endereco();
-        $endereco->cep = $request->input('cep');
-        $endereco->logradouro = $request->input('logradouro');
-        $endereco->numero = $request->input('numero');
-        $endereco->bairro = $request->input('bairro');
-        $endereco->complemento = $request->input('complemento');
-        $endereco->cidade = $request->input('cidade');
-        $endereco->uf = $request->input('uf');
-        $endereco->usuario_cadastro = Auth::user()->id;
-        $endereco->save();
+        $model = new ShowPacienteViewModel();
 
-        $paciente->ficha_id = $request->input('ficha_id');
-        $paciente->cpf = $request->input('cpf');
-        $paciente->nome = $request->input('nome');
-        $paciente->genero = $request->input('genero');
-        $paciente->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
-        $paciente->email = $request->input('email');
-        $paciente->telefone = $request->input('telefone');
-        $paciente->observacao = $request->input('observacao');
-        $paciente->usuario_cadastro = Auth::user()->id;
-        $paciente->endereco_id = $endereco->id;
-        $paciente->save();
+        $paciente = Paciente::find($id);
+        if (isset($paciente)) {
+            $model->setPaciente($paciente);
+
+            $paciente->ficha_id = $request->input('ficha_id');
+            $paciente->cpf = $request->input('cpf');
+            $paciente->nome = $request->input('nome');
+            $paciente->genero = $request->input('genero');
+            $paciente->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
+            $paciente->email = $request->input('email');
+            $paciente->telefone = $request->input('telefone');
+            $paciente->observacao = $request->input('observacao');
+            $paciente->save();
+
+            $endereco = Endereco::Find($paciente->endereco_id);
+            if (isset($endereco)) {
+                $model->setEndereco($endereco);
+
+                $endereco->cep = $request->input('cep');
+                $endereco->logradouro = $request->input('logradouro');
+                $endereco->numero = $request->input('numero');
+                $endereco->bairro = $request->input('bairro');
+                $endereco->complemento = $request->input('complemento');
+                $endereco->cidade = $request->input('cidade');
+                $endereco->uf = $request->input('uf');
+    
+                $endereco->save();
+            }
+        }
+
+        return view('paciente.show', ['model' => $model]);
     }
 
     public function destroy($id)
@@ -189,6 +197,6 @@ class PacienteController extends Controller
         if (isset($paciente)) {
             $paciente->delete();
         }
-        return redirect()->route('pacientes')->withStatus(__('Cadastro Excluído com Sucesso!'));;       
+        return redirect()->route('pacientes')->withStatus(__('Cadastro Excluído com Sucesso!'));;
     }
 }
