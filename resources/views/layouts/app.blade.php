@@ -46,7 +46,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('pacientes') }}">
-                                    <i class="far fa-address-book"></i> &nbsp;
+                                    <i class="fas fa-user-plus"></i> &nbsp;
                                         {{ __('Pacientes') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}">
@@ -57,7 +57,12 @@
                                     </a>
                                    
                                     <div class="dropdown-divider"></div>
-                                    
+
+                                    <a class="dropdown-item" href="{{ route('funcionarios') }}">
+                                    <i class="fas fa-user-tie"></i> &nbsp;
+                                        {{ __('Funcionários') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('usuarios') }}">
                                         {{ __('Usuários') }}
                                     </a>

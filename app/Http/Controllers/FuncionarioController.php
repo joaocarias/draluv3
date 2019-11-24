@@ -2,42 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Funcionario;
 use App\Endereco;
-use App\Models\Paciente\PacientesViewModel;
-use App\Paciente;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Paciente\ShowPacienteViewModel;
 use App\Lib\Auxiliar;
-use App\Models\Paciente\EditarPacienteViewModel;
 use App\Log;
+use App\Models\Funcionario\EditarFuncionarioViewModel;
+use App\Models\Funcionario\ShowFuncionarioViewModel;
+use Illuminate\Http\Request;
 
-class PacienteController extends Controller
+class FuncionarioController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $model = new PacientesViewModel();
-
-        $pacientesRecentes = Paciente::orderBy('created_at', 'desc')->take(10)->get();
-        $model->setPacientesRecentes($pacientesRecentes);
-
-        $filtro = $request->input('filtro');
-        $model->setFiltro($filtro);
-
-        $pacientesFiltro = Paciente::where('nome', 'like', "%" . $filtro . "%")
-            ->orWhere('cpf', 'like', "%" . $filtro . "%")
-            ->orWhere('ficha_id', 'like', "%" . $filtro . "%")
-            ->orderBy('nome', 'asc')
-            ->get();
-
-        $model->setPacientesFiltro($pacientesFiltro);
-
-        return view('paciente.index', ['model' => $model]);
+        $funcionarios = Funcionario::all();
+        return view('funcionario.index', ['model' => $funcionarios]);
     }
 
     public function create()
     {
-        return view('paciente.create', ['model' => null]);
+        return view('funcionario.create', ['model' => null]);
     }
 
     public function store(Request $request)
@@ -77,31 +61,30 @@ class PacienteController extends Controller
         $endereco->usuario_cadastro = Auth::user()->id;
         $endereco->save();
 
-        $paciente = new Paciente();
-        $paciente->ficha_id = $request->input('ficha_id');
-        $paciente->cpf = $request->input('cpf');
-        $paciente->nome = $request->input('nome');
-        $paciente->genero = $request->input('genero');
-        $paciente->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
-        $paciente->email = $request->input('email');
-        $paciente->telefone = $request->input('telefone');
-        $paciente->observacao = $request->input('observacao');
-        $paciente->usuario_cadastro = Auth::user()->id;
-        $paciente->endereco_id = $endereco->id;
-        $paciente->save();
+        $funcionario = new Funcionario();
+        $funcionario->cpf = $request->input('cpf');
+        $funcionario->nome = $request->input('nome');
+        $funcionario->genero = $request->input('genero');
+        $funcionario->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
+        $funcionario->email = $request->input('email');
+        $funcionario->telefone = $request->input('telefone');
+        $funcionario->observacao = $request->input('observacao');
+        $funcionario->usuario_cadastro = Auth::user()->id;
+        $funcionario->endereco_id = $endereco->id;
+        $funcionario->save();
 
-        return redirect()->route('exibir_paciente', ['id' => $paciente->id])->withStatus(__('Cadastro Realizado com Sucesso!'));
+        return redirect()->route('exibir_funcionario', ['id' => $funcionario->id])->withStatus(__('Cadastro Realizado com Sucesso!'));
     }
 
     public function show($id)
     {
-        $model = new ShowPacienteViewModel();
+        $model = new ShowFuncionarioViewModel();
 
-        $paciente = Paciente::find($id);
-        if (isset($paciente)) {
-            $model->setPaciente($paciente);
+        $funcionario = Funcionario::find($id);
+        if (isset($funcionario)) {
+            $model->setFuncionario($funcionario);
 
-            $endereco = Endereco::Find($paciente->endereco_id);
+            $endereco = Endereco::Find($funcionario->endereco_id);
             if (isset($endereco)) {
                 $model->setEndereco($endereco);
             }
@@ -109,18 +92,18 @@ class PacienteController extends Controller
             $model->setMensagem('Cadastro não Encontrado!');
         }
 
-        return view('paciente.show', ['model' => $model]);
+        return view('funcionario.show', ['model' => $model]);
     }
 
     public function edit($id)
     {
-        $model = new EditarPacienteViewModel();
+        $model = new EditarFuncionarioViewModel();
 
-        $paciente = Paciente::find($id);
-        if (isset($paciente)) {
-            $model->setPaciente($paciente);
+        $funcionario = Funcionario::find($id);
+        if (isset($funcionario)) {
+            $model->setFuncionario($funcionario);
 
-            $endereco = Endereco::Find($paciente->endereco_id);
+            $endereco = Endereco::Find($funcionario->endereco_id);
             if (isset($endereco)) {
                 $model->setEndereco($endereco);
             }
@@ -128,7 +111,7 @@ class PacienteController extends Controller
             $model->setMensagem('Cadastro não Encontrado!');
         }
 
-        return view('paciente.edit', ['model' => $model]);
+        return view('funcionario.edit', ['model' => $model]);
     }
 
     public function update(Request $request, $id)
@@ -157,67 +140,62 @@ class PacienteController extends Controller
 
         $request->validate($regras, $messagens);
 
-        $model = new ShowPacienteViewModel();
+        $model = new ShowFuncionarioViewModel();
 
-        $paciente = Paciente::find($id);
-        if (isset($paciente)) {
-            $model->setPaciente($paciente);
+        $funcionario = Funcionario::find($id);
+        if (isset($funcionario)) {
+            $model->setFuncionario($funcionario);
 
             $stringLog = "";
-            
-            if($paciente->ficha_id != $request->input('ficha_id')){
-                $stringLog = $stringLog . " - ficha_id: " . $paciente->ficha_id;
-                $paciente->ficha_id = $request->input('ficha_id');                
-            }
-            
-            if($paciente->cpf != $request->input('cpf')){                
-                $stringLog = $stringLog . " - cpf: " . $paciente->cpf;
-                $paciente->cpf = $request->input('cpf');
+                      
+            if($funcionario->cpf != $request->input('cpf')){                
+                $stringLog = $stringLog . " - cpf: " . $funcionario->cpf;
+                $funcionario->cpf = $request->input('cpf');
             }
 
-            if($paciente->nome != $request->input('nome')){
-                $paciente->nome = $request->input('nome');
-                $stringLog = $stringLog . " - nome: " . $paciente->nome;
+            if($funcionario->nome != $request->input('nome')){
+                $funcionario->nome = $request->input('nome');
+                $stringLog = $stringLog . " - nome: " . $funcionario->nome;
             }
 
-            if($paciente->genero != $request->input('genero')){
-                $stringLog = $stringLog . " - genero: " . $paciente->genero;
-                $paciente->genero = $request->input('genero');                
+            if($funcionario->genero != $request->input('genero')){
+                $stringLog = $stringLog . " - genero: " . $funcionario->genero;
+                $funcionario->genero = $request->input('genero');                
             }
 
-            if($paciente->data_de_nascimento != Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'))){
-                $stringLog = $stringLog . " - data_de_nascimento: " . $paciente->data_de_nascimento;
-                $paciente->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
+            if($funcionario->data_de_nascimento != Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'))){
+                $stringLog = $stringLog . " - data_de_nascimento: " . $funcionario->data_de_nascimento;
+                $funcionario->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
             }
 
-            if($paciente->email != $request->input('email')){
-                $stringLog = $stringLog . " - email: " . $paciente->email;
-                $paciente->email = $request->input('email');
+            if($funcionario->email != $request->input('email')){
+                $stringLog = $stringLog . " - email: " . $funcionario->email;
+                $funcionario->email = $request->input('email');
             }
 
-            if($paciente->telefone != $request->input('telefone')){
-                $stringLog = $stringLog . " - telefone: " . $paciente->telefone;
-                $paciente->telefone = $request->input('telefone');
+            if($funcionario->telefone != $request->input('telefone')){
+                $stringLog = $stringLog . " - telefone: " . $funcionario->telefone;
+                $funcionario->telefone = $request->input('telefone');
             }
 
-            if($paciente->observacao != $request->input('observacao')){
-                $stringLog = $stringLog . " - observacao: " . $paciente->observacao;
-                $paciente->observacao = $request->input('observacao');
+            if($funcionario->observacao != $request->input('observacao')){
+                $stringLog = $stringLog . " - observacao: " . $funcionario->observacao;
+                $funcionario->observacao = $request->input('observacao');
             }
             
-            $paciente->save();
+            $funcionario->save();
 
             if($stringLog != ""){
                 $log = new Log();
-                $log->tabela = "pacientes";
-                $log->tabela_id = $paciente->id;
+                $log->tabela = "funcionarios";
+                $log->tabela_id = $funcionario->id;
                 $log->acao = "EDICAO";
                 $log->descricao = $stringLog;
                 $log->usuario_id = Auth::user()->id;
                 $log->save();
             }
 
-            $endereco = Endereco::Find($paciente->endereco_id);
+            $endereco = Endereco::Find($funcionario->endereco_id);
             if (isset($endereco)) {
                 $model->setEndereco($endereco);
 
@@ -271,23 +249,23 @@ class PacienteController extends Controller
             }
         }
 
-        return view('paciente.show', ['model' => $model]);
+        return view('funcionario.show', ['model' => $model]);
     }
 
     public function destroy($id)
     {
-        $paciente = Paciente::find($id);
-        if (isset($paciente)) {
-            $paciente->delete();
+        $funcionario = Funcionario::find($id);
+        if (isset($funcionario)) {
+            $funcionario->delete();
 
             $log = new Log();
-            $log->tabela = "pacientes";
+            $log->tabela = "funcionarios";
             $log->tabela_id = $id;
             $log->acao = "EXCLUSAO";
             $log->descricao = "EXCLUSAO";
             $log->usuario_id = Auth::user()->id;
             $log->save();
         }
-        return redirect()->route('pacientes')->withStatus(__('Cadastro Excluído com Sucesso!'));
+        return redirect()->route('funcionarios')->withStatus(__('Cadastro Excluído com Sucesso!'));
     }
 }

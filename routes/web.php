@@ -35,6 +35,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/pacientes/editar/{id}', 'PacienteController@edit')->name('editar_paciente');
     Route::put('/pacientes/update/{id}', 'PacienteController@update')->name('update_paciente');
 
+    /* Rotas para Funcionario */
+    Route::get('/funcionarios', 'FuncionarioController@index')->name('funcionarios');
+    Route::get('/funcionarios/novo', 'FuncionarioController@create')->name('novo_funcionario');
+    Route::get('/funcionarios/exibir/{id}', 'FuncionarioController@show')->name('exibir_funcionario');
+    Route::post('/funcionarios/store', 'FuncionarioController@store')->name('cadastrar_funcionario');
+    Route::get('/funcionarios/excluir/{id}', 'FuncionarioController@destroy')->name('excluir_funcionario');
+    Route::get('/funcionarios/editar/{id}', 'FuncionarioController@edit')->name('editar_funcionario');
+    Route::put('/funcionarios/update/{id}', 'FuncionarioController@update')->name('update_funcionario');
+
+
 
 
 
