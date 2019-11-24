@@ -70,7 +70,7 @@ use App\Lib\Genero;
                         </div>
 
                         <div class="col-md-3">
-                            Data de Nascimento: <strong>{{ __($model->paciente->data_de_nascimento)  }}</strong>
+                            Data de Nascimento: <strong>{{ __(\Carbon\Carbon::parse($model->paciente->data_de_nascimento)->format('d/m/Y'))  }}</strong>
                         </div>
 
                         <div class="col-md-6">
