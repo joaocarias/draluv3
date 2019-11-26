@@ -49,7 +49,8 @@
                                     <i class="fas fa-user-plus"></i> &nbsp;
                                         {{ __('Pacientes') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                    <a class="dropdown-item" href="{{ route('produtoseservicos') }}">
+                                    <i class="fas fa-barcode"></i> &nbsp;
                                         {{ __('Produtos e Serviços') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}">

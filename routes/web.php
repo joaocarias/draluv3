@@ -44,6 +44,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/funcionarios/editar/{id}', 'FuncionarioController@edit')->name('editar_funcionario');
     Route::put('/funcionarios/update/{id}', 'FuncionarioController@update')->name('update_funcionario');
 
+    /* Rotas para Produtos e Servicos */
+    Route::get('/produtoseservicos', 'ProdutoServicoController@index')->name('produtoseservicos');
+    Route::get('/produtoseservicos/novo', 'ProdutoServicoController@create')->name('novo_produto_servico');
+    Route::post('/produtoseservicos/store', 'ProdutoServicoController@store')->name('cadastrar_produto_servico');
+    Route::get('/produtoseservicos/editar/{id}', 'ProdutoServicoController@edit')->name('editar_produto_servico');    
+    Route::put('/produtoseservicos/update/{id}', 'ProdutoServicoController@update')->name('update_produto_servico');
+    Route::get('/produtoseservicos/excluir/{id}', 'ProdutoServicoController@destroy')->name('excluir_produto_servico');
+    
+
+    
+    
+    
+
 
 
 

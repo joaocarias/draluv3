@@ -265,7 +265,10 @@ class FuncionarioController extends Controller
             $log->descricao = "EXCLUSAO";
             $log->usuario_id = Auth::user()->id;
             $log->save();
+            
+            return redirect()->route('funcionarios')->withStatus(__('Cadastro Excluído com Sucesso!'));
         }
-        return redirect()->route('funcionarios')->withStatus(__('Cadastro Excluído com Sucesso!'));
+
+        return redirect()->route('funcionarios')->withStatus(__('Cadastro Não Excluído!'));
     }
 }
