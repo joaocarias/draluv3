@@ -52,8 +52,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/produtoseservicos/update/{id}', 'ProdutoServicoController@update')->name('update_produto_servico');
     Route::get('/produtoseservicos/excluir/{id}', 'ProdutoServicoController@destroy')->name('excluir_produto_servico');
     
-
-    
+    /* Rotas para Fornecedores */
+    Route::get('/fornecedores', 'FornecedorController@index')->name('fornecedores'); 
+    Route::get('/fornecedores/novo', 'FornecedorController@create')->name('novo_fornecedor');
+    Route::post('/fornecedores/store', 'FornecedorController@store')->name('cadastrar_fornecedor');
+    Route::get('/fornecedores/exibir/{id}', 'FornecedorController@show')->name('exibir_fornecedor');
+    Route::get('/fornecedores/excluir/{id}', 'FornecedorController@destroy')->name('excluir_fornecedor');
+    Route::get('/fornecedores/editar/{id}', 'FornecedorController@edit')->name('editar_fornecedor');
+    Route::put('/fornecedores/update/{id}', 'FornecedorController@update')->name('update_fornecedor');
+    Route::get('/fornecedores/excluir/{id}', 'FornecedorController@destroy')->name('excluir_fornecedores');
     
     
 

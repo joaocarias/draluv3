@@ -2,34 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Funcionario;
+use Illuminate\Http\Request;
+use App\Models\Fornecedor\FornecedoresViewModel;
+use App\Models\Fornecedor\ShowFornecedorViewModel;
+use App\Models\Fornecedor\EditarFornecedorViewModel;
+use App\Fornecedor;
 use App\Endereco;
 use Illuminate\Support\Facades\Auth;
-use App\Lib\Auxiliar;
 use App\Log;
-use App\Models\Funcionario\EditarFuncionarioViewModel;
-use App\Models\Funcionario\ShowFuncionarioViewModel;
-use Illuminate\Http\Request;
 
-class FuncionarioController extends Controller
+class FornecedorController extends Controller
 {
     public function index()
     {
-        $funcionarios = Funcionario::all();
-        return view('funcionario.index', ['model' => $funcionarios]);
+        $fornecedores = Fornecedor::all();
+        return view('fornecedor.index', ['model' => $fornecedores]); 
     }
 
     public function create()
     {
-        return view('funcionario.create', ['model' => null]);
+        return view('fornecedor.create', ['model' => null]);
     }
 
     public function store(Request $request)
     {
         $regras = [
-            'nome' => 'required|min:3|max:254',
-            'genero' => 'required',
-            'data_de_nascimento' => 'required|date_format:d/m/Y',
+            'nome_social' => 'required|min:3|max:254',
             'logradouro' => 'required|min:3|max:254',
             'cidade' => 'required|min:3|max:254',
             'uf' => 'required',
@@ -39,8 +37,6 @@ class FuncionarioController extends Controller
             'required' => 'Campo Obrigatório!',
             'nome.required' => 'Campo Obrigatório!',
             'nome.min' => 'É necessário no mínimo 3 caracteres!',
-            'genero.required' => 'Campo Obrigatório!',
-            'data_de_nascimento.date_format' => 'Informe uma data válida2!',
             'logradouro.required' => 'Campo Obrigatório!',
             'logradouro.min' => 'É necessário no mínimo 3 caracteres!',
             'cidade.required' => 'Campo Obrigatório!',
@@ -61,30 +57,29 @@ class FuncionarioController extends Controller
         $endereco->usuario_cadastro = Auth::user()->id;
         $endereco->save();
 
-        $funcionario = new Funcionario();
-        $funcionario->cpf = $request->input('cpf');
-        $funcionario->nome = $request->input('nome');
-        $funcionario->genero = $request->input('genero');
-        $funcionario->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
-        $funcionario->email = $request->input('email');
-        $funcionario->telefone = $request->input('telefone');
-        $funcionario->observacao = $request->input('observacao');
-        $funcionario->usuario_cadastro = Auth::user()->id;
-        $funcionario->endereco_id = $endereco->id;
-        $funcionario->save();
+        $fornecedor = new Fornecedor();
+        $fornecedor->nome_social = $request->input('nome_social');
+        $fornecedor->cpf_cnpj = $request->input('cpf_cnpj');
+        $fornecedor->inscricao = $request->input('inscricao');
+        $fornecedor->email = $request->input('email');
+        $fornecedor->telefone = $request->input('telefone');
+        $fornecedor->observacao = $request->input('observacao');
+        $fornecedor->usuario_cadastro = Auth::user()->id;
+        $fornecedor->endereco_id = $endereco->id;
+        $fornecedor->save();
 
-        return redirect()->route('exibir_funcionario', ['id' => $funcionario->id])->withStatus(__('Cadastro Realizado com Sucesso!'));
+        return redirect()->route('exibir_fornecedor', ['id' => $fornecedor->id])->withStatus(__('Cadastro Realizado com Sucesso!'));
     }
 
     public function show($id)
     {
-        $model = new ShowFuncionarioViewModel();
+        $model = new ShowFornecedorViewModel();
 
-        $funcionario = Funcionario::find($id);
-        if (isset($funcionario)) {
-            $model->setFuncionario($funcionario);
+        $fornecedor = Fornecedor::find($id);
+        if (isset($fornecedor)) {
+            $model->setFornecedor($fornecedor);
 
-            $endereco = Endereco::Find($funcionario->endereco_id);
+            $endereco = Endereco::Find($fornecedor->endereco_id);
             if (isset($endereco)) {
                 $model->setEndereco($endereco);
             }
@@ -92,18 +87,18 @@ class FuncionarioController extends Controller
             $model->setMensagem('Cadastro não Encontrado!');
         }
 
-        return view('funcionario.show', ['model' => $model]);
+        return view('fornecedor.show', ['model' => $model]);
     }
 
     public function edit($id)
     {
-        $model = new EditarFuncionarioViewModel();
+        $model = new EditarFornecedorViewModel();
 
-        $funcionario = Funcionario::find($id);
-        if (isset($funcionario)) {
-            $model->setFuncionario($funcionario);
+        $fornecedor = fornecedor::find($id);
+        if (isset($fornecedor)) {
+            $model->setFornecedor($fornecedor);
 
-            $endereco = Endereco::Find($funcionario->endereco_id);
+            $endereco = Endereco::Find($fornecedor->endereco_id);
             if (isset($endereco)) {
                 $model->setEndereco($endereco);
             }
@@ -111,15 +106,13 @@ class FuncionarioController extends Controller
             $model->setMensagem('Cadastro não Encontrado!');
         }
 
-        return view('funcionario.edit', ['model' => $model]);
+        return view('fornecedor.edit', ['model' => $model]);
     }
 
     public function update(Request $request, $id)
     {
         $regras = [
-            'nome' => 'required|min:3|max:254',
-            'genero' => 'required',
-            'data_de_nascimento' => 'required|date_format:d/m/Y',
+            'nome_social' => 'required|min:3|max:254',
             'logradouro' => 'required|min:3|max:254',
             'cidade' => 'required|min:3|max:254',
             'uf' => 'required',
@@ -129,8 +122,6 @@ class FuncionarioController extends Controller
             'required' => 'Campo Obrigatório!',
             'nome.required' => 'Campo Obrigatório!',
             'nome.min' => 'É necessário no mínimo 3 caracteres!',
-            'genero.required' => 'Campo Obrigatório!',
-            'data_de_nascimento.date_format' => 'Informe uma data válida2!',
             'logradouro.required' => 'Campo Obrigatório!',
             'logradouro.min' => 'É necessário no mínimo 3 caracteres!',
             'cidade.required' => 'Campo Obrigatório!',
@@ -140,62 +131,57 @@ class FuncionarioController extends Controller
 
         $request->validate($regras, $messagens);
 
-        $model = new ShowFuncionarioViewModel();
+        $model = new ShowFornecedorViewModel();
 
-        $funcionario = Funcionario::find($id);
-        if (isset($funcionario)) {
-            $model->setFuncionario($funcionario);
+        $fornecedor = Fornecedor::find($id);
+        if (isset($fornecedor)) {
+            $model->setFornecedor($fornecedor);
 
             $stringLog = "";
-                      
-            if($funcionario->cpf != $request->input('cpf')){                
-                $stringLog = $stringLog . " - cpf: " . $funcionario->cpf;
-                $funcionario->cpf = $request->input('cpf');
+                    
+            if($fornecedor->nome_social != $request->input('nome_social')){                
+                $stringLog = $stringLog . " - nome_social: " . $fornecedor->cnome_socialpf;
+                $fornecedor->nome_social = $request->input('nome_social');
             }
 
-            if($funcionario->nome != $request->input('nome')){                
-                $stringLog = $stringLog . " - nome: " . $funcionario->nome;
-                $funcionario->nome = $request->input('nome');
+            if($fornecedor->cpf_cnpj != $request->input('cpf_cnpj')){
+                $stringLog = $stringLog . " - cpf_cnpj: " . $fornecedor->cpf_cnpj;
+                $fornecedor->cpf_cnpj = $request->input('cpf_cnpj');
             }
 
-            if($funcionario->genero != $request->input('genero')){
-                $stringLog = $stringLog . " - genero: " . $funcionario->genero;
-                $funcionario->genero = $request->input('genero');                
+            if($fornecedor->inscricao != $request->input('inscricao')){
+                $stringLog = $stringLog . " - inscricao: " . $fornecedor->inscricao;
+                $fornecedor->inscricao = $request->input('inscricao');                
+            }
+        
+            if($fornecedor->email != $request->input('email')){
+                $stringLog = $stringLog . " - email: " . $fornecedor->email;
+                $fornecedor->email = $request->input('email');
             }
 
-            if($funcionario->data_de_nascimento != Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'))){
-                $stringLog = $stringLog . " - data_de_nascimento: " . $funcionario->data_de_nascimento;
-                $funcionario->data_de_nascimento = Auxiliar::converterDataParaUSA($request->input('data_de_nascimento'));
+            if($fornecedor->telefone != $request->input('telefone')){
+                $stringLog = $stringLog . " - telefone: " . $fornecedor->telefone;
+                $fornecedor->telefone = $request->input('telefone');
             }
 
-            if($funcionario->email != $request->input('email')){
-                $stringLog = $stringLog . " - email: " . $funcionario->email;
-                $funcionario->email = $request->input('email');
-            }
-
-            if($funcionario->telefone != $request->input('telefone')){
-                $stringLog = $stringLog . " - telefone: " . $funcionario->telefone;
-                $funcionario->telefone = $request->input('telefone');
-            }
-
-            if($funcionario->observacao != $request->input('observacao')){
-                $stringLog = $stringLog . " - observacao: " . $funcionario->observacao;
-                $funcionario->observacao = $request->input('observacao');
+            if($fornecedor->observacao != $request->input('observacao')){
+                $stringLog = $stringLog . " - observacao: " . $fornecedor->observacao;
+                $fornecedor->observacao = $request->input('observacao');
             }
             
-            $funcionario->save();
+            $fornecedor->save();
 
             if($stringLog != ""){
                 $log = new Log();
-                $log->tabela = "funcionarios";
-                $log->tabela_id = $funcionario->id;
+                $log->tabela = "fornecedors";
+                $log->tabela_id = $fornecedor->id;
                 $log->acao = "EDICAO";
                 $log->descricao = $stringLog;
                 $log->usuario_id = Auth::user()->id;
                 $log->save();
             }
 
-            $endereco = Endereco::Find($funcionario->endereco_id);
+            $endereco = Endereco::Find($fornecedor->endereco_id);
             if (isset($endereco)) {
                 $model->setEndereco($endereco);
 
@@ -249,26 +235,26 @@ class FuncionarioController extends Controller
             }
         }
 
-        return view('funcionario.show', ['model' => $model]);
+        return view('fornecedor.show', ['model' => $model]);
     }
 
     public function destroy($id)
     {
-        $funcionario = Funcionario::find($id);
-        if (isset($funcionario)) {
-            $funcionario->delete();
+        $fornecedor = Fornecedor::find($id);
+        if (isset($fornecedor)) {
+            $fornecedor->delete();
 
             $log = new Log();
-            $log->tabela = "funcionarios";
+            $log->tabela = "fornecedors";
             $log->tabela_id = $id;
             $log->acao = "EXCLUSAO";
             $log->descricao = "EXCLUSAO";
             $log->usuario_id = Auth::user()->id;
             $log->save();
             
-            return redirect()->route('funcionarios')->withStatus(__('Cadastro Excluído com Sucesso!'));
+            return redirect()->route('fornecedores')->withStatus(__('Cadastro Excluído com Sucesso!'));
         }
 
-        return redirect()->route('funcionarios')->withStatus(__('Cadastro Não Excluído!'));
+        return redirect()->route('fornecedores')->withStatus(__('Cadastro Não Excluído!'));
     }
 }
