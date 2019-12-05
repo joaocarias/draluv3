@@ -90,42 +90,70 @@ use App\Lib\Genero;
 
                     <div class="row">
                         <div class="col-md-12">
-                            <hr /> 
+                            <hr />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            Endereço: 
-                                <strong> 
-                                    {{ __($model->endereco->logradouro) }}
-                                    {{ __(', ' . $model->endereco->numero) }}
-                                    {{ __(', ' . $model->endereco->complemento) }}
-                                    {{ __(' - ' . $model->endereco->bairro) }}
-                                    {{ __(' - ' . $model->endereco->cidade) }}
-                                    {{ __(' - ' . $model->endereco->uf) }}
-                                </strong> 
+                            Endereço:
+                            <strong>
+                                {{ __($model->endereco->logradouro) }}
+                                {{ __(', ' . $model->endereco->numero) }}
+                                {{ __(', ' . $model->endereco->complemento) }}
+                                {{ __(' - ' . $model->endereco->bairro) }}
+                                {{ __(' - ' . $model->endereco->cidade) }}
+                                {{ __(' - ' . $model->endereco->uf) }}
+                            </strong>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <hr /> 
+                            <hr />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <a href="{{ route('editar_paciente', ['id' => $model->paciente->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
-                            <a href="#" class="btn btn-danger btn-sm btn-excluir" id-paciente="{{ $model->paciente->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>  
+                            <a href="#" class="btn btn-danger btn-sm btn-excluir" id-paciente="{{ $model->paciente->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">{{ __('Orçamentos') }}</div>
+
+                <div class="card-body">
+                    
+                        <div class="alert alert-warning text-center col-md-12" role="alert">
+                            O paciênte não possui Orçamento!
+                        </div>
+                        <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+
+                        <div class="col-md-12">
+                            <a href="{{ route('editar_paciente', ['id' => $model->paciente->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-file-alt"></i> Novo Orçamento </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     @else
 
     <div class="row">
-        <div class="col-md-12">           
+        <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">

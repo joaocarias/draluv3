@@ -93,7 +93,7 @@ class ProdutoServicoController extends Controller
             }
 
             if($produtoServico->observacao != $request->input('observacao')){                
-                $stringLog = $stringLog . " - observacao: " . $produtoServico->observacaopo;
+                $stringLog = $stringLog . " - observacao: " . $produtoServico->observacao;
                 $produtoServico->observacao = $request->input('observacao');
             }
             

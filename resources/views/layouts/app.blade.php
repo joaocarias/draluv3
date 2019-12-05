@@ -65,8 +65,30 @@
                                         {{ __('Funcionários') }}
                                     </a>
 
+                                    <a class="dropdown-item" href="{{ route('funcoes') }}">
+                                    <i class="fas fa-tools"></i> &nbsp;
+                                        {{ __('Funções') }}
+                                    </a>                                 
+
                                     <a class="dropdown-item" href="{{ route('usuarios') }}">
                                         {{ __('Usuários') }}
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ __('Movimentação') }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('pacientes') }}">
+                                    <i class="fas fa-cash-register"></i> &nbsp;
+                                        {{ __('Entrada') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('produtoseservicos') }}">
+                                    <i class="fas fa-wallet"></i> &nbsp;
+                                        {{ __('Saída') }}
                                     </a>
                                 </div>
                             </li>
