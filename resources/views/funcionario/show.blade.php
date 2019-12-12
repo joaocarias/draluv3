@@ -1,6 +1,7 @@
 <?php
 
 use App\Lib\Genero;
+use App\Lib\Auxiliar;
 
 ?>
 
@@ -86,42 +87,106 @@ use App\Lib\Genero;
 
                     <div class="row">
                         <div class="col-md-12">
-                            <hr /> 
+                            <hr />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            Endereço: 
-                                <strong> 
-                                    {{ __($model->endereco->logradouro) }}
-                                    {{ __(', ' . $model->endereco->numero) }}
-                                    {{ __(', ' . $model->endereco->complemento) }}
-                                    {{ __(' - ' . $model->endereco->bairro) }}
-                                    {{ __(' - ' . $model->endereco->cidade) }}
-                                    {{ __(' - ' . $model->endereco->uf) }}
-                                </strong> 
+                            Endereço:
+                            <strong>
+                                {{ __($model->endereco->logradouro) }}
+                                {{ __(', ' . $model->endereco->numero) }}
+                                {{ __(', ' . $model->endereco->complemento) }}
+                                {{ __(' - ' . $model->endereco->bairro) }}
+                                {{ __(' - ' . $model->endereco->cidade) }}
+                                {{ __(' - ' . $model->endereco->uf) }}
+                            </strong>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <hr /> 
+                            <hr />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <a href="{{ route('editar_funcionario', ['id' => $model->funcionario->id ]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> Editar </a>
-                            <a href="#" class="btn btn-danger btn-sm btn-excluir" id-funcionario="{{ $model->funcionario->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>  
+                            <a href="#" class="btn btn-danger btn-sm btn-excluir" id-funcionario="{{ $model->funcionario->id }}"> <i class="far fa-trash-alt"></i> Excluir </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">{{ __('Lotação') }}</div>
+
+                <div class="card-body">
+                    <div class="row">
+                    <div class="col-md-12">
+                        @if(Count($model->lotacoes) > 0)
+                        <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Data de Início da Lotação</th>
+                                <th scope="col">Data do Fim da Lotação</th>
+                                
+                                <th scope="col"></th>
+                            <tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($model->lotacoes as $lotacao)
+                            <tr>
+                                <td scope="row">{{ __($lotacao->id) }}</td>
+                                <td>{{ __(\Carbon\Carbon::parse($lotacao->data_de_inicio)->format('d/m/Y')) }}</td>
+                                <td>{{ __($lotacao->data_de_fim ? \Carbon\Carbon::parse($lotacao->data_de_fim)->format('d/m/Y') : "" ) }}</td>
+                                
+                                <td class="text-right">
+                                    <a href="{{ route('exibir_funcionario', [$lotacao->id]) }}" class="btn btn-success btn-sm"><i class="far fa-file-archive"></i> &nbsp; Finalizar Lotação</a>
+                                    <a href="{{ route('exibir_funcionario', [$lotacao->id]) }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i> &nbsp; Editar</a>
+                                    <a href="{{ route('exibir_funcionario', [$lotacao->id]) }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> &nbsp; Excluir</a>
+                                 </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                        @else                        
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Atenção: </strong> Não existe nenhuma lotação cadastrada para o Funcionário!
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>                        
+                        @endif
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="{{ route('nova_lotacao', ['funcionario_id' => $model->funcionario->id]) }}" class="btn btn-primary btn-sm btn-cadastrar-lotacao"> <i class="far fa-file-alt"></i> Cadastrar </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     @else
 
     <div class="row">
-        <div class="col-md-12">           
+        <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -139,7 +204,7 @@ use App\Lib\Genero;
 </div>
 
 
-<!-- Modal Excluir -->
+<!-- Modal Excluir Funcionario -->
 <div class="modal fade" id="ModalExcluir" tabindex="-1" role="dialog" aria-labelledby="TituloModalExcluir" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

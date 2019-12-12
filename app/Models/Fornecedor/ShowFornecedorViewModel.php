@@ -6,13 +6,13 @@ class ShowFornecedorViewModel
 {
     public $fornecedor;
     public $endereco;
-    public $mensagem;
+    public $mensagem;    
 
     function __construct($fornecedor = null, $endereco = null, $mensagem = null)
     {
         $this->fornecedor = $fornecedor;
         $this->endereco = $endereco; 
-        $this->mensagem = $mensagem;
+        $this->mensagem = $mensagem;       
     }
 
     function getFornecedor(){
@@ -38,4 +38,6 @@ class ShowFornecedorViewModel
     function setMensagem($value){
         $this->mensagem = $value;
     }    
+ 
+   
 }

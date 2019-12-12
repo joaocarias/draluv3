@@ -7,6 +7,7 @@ use App\Endereco;
 use Illuminate\Support\Facades\Auth;
 use App\Lib\Auxiliar;
 use App\Log;
+use App\Lotacao;
 use App\Models\Funcionario\EditarFuncionarioViewModel;
 use App\Models\Funcionario\ShowFuncionarioViewModel;
 use Illuminate\Http\Request;
@@ -88,6 +89,9 @@ class FuncionarioController extends Controller
             if (isset($endereco)) {
                 $model->setEndereco($endereco);
             }
+
+            $lotacoes = Lotacao::where('funcionario_id', $id)->orderBy('data_de_inicio')->get();
+            $model->setLotacoes($lotacoes);
         } else {
             $model->setMensagem('Cadastro não Encontrado!');
         }

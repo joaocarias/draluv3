@@ -7,12 +7,14 @@ class ShowFuncionarioViewModel
     public $funcionario;
     public $endereco;
     public $mensagem;
+    public $lotacoes;
 
-    function __construct($funcionario = null, $endereco = null, $mensagem = null)
+    function __construct($funcionario = null, $endereco = null, $mensagem = null, $lotacoes = null)
     {
         $this->funcionario = $funcionario;
         $this->endereco = $endereco; 
         $this->mensagem = $mensagem;
+        $this->lotacoes = $lotacoes;
     }
 
     function getFuncionario(){
@@ -38,4 +40,14 @@ class ShowFuncionarioViewModel
     function setMensagem($value){
         $this->mensagem = $value;
     }    
+
+    public function getLotacoes()
+    {
+        return $this->lotacoes;
+    }
+     
+    public function setLotacoes($lotacoes)
+    {
+        $this->lotacoes = $lotacoes;
+    }
 }

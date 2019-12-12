@@ -58,7 +58,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/funcoes/update/{id}', 'FuncaoController@update')->name('update_funcao');
     Route::get('/funcoes/excluir/{id}', 'FuncaoController@destroy')->name('excluir_funcao');
     
-
+    Route::get('/lotacoes/nova/{funcionario_id}', 'LotacaoController@create')->name('nova_lotacao');
+    Route::post('/lotacoes/store', 'LotacaoController@store')->name('cadastrar_lotacao');
+    
     // Route::resource('user', 'UserController', ['except' => ['show']]);
 	// Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	// Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);

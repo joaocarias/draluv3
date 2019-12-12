@@ -56,7 +56,7 @@ class PacienteController extends Controller
             'nome.required' => 'Campo Obrigatório!',
             'nome.min' => 'É necessário no mínimo 3 caracteres!',
             'genero.required' => 'Campo Obrigatório!',
-            'data_de_nascimento.date_format' => 'Informe uma data válida2!',
+            'data_de_nascimento.date_format' => 'Informe uma data válida!',
             'logradouro.required' => 'Campo Obrigatório!',
             'logradouro.min' => 'É necessário no mínimo 3 caracteres!',
             'cidade.required' => 'Campo Obrigatório!',
